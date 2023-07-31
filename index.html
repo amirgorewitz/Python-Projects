@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Processing Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+    }
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text Processing Tool</h1>
+  <form id="textForm">
+    <label for="textInput">Enter your text:</label><br>
+    <textarea id="textInput" required></textarea><br>
+    <button type="submit">Process Text</button>
+  </form>
+  <h2>Unique Words:</h2>
+  <ul id="uniqueWordsList"></ul>
+  <h2>Singular Nouns:</h2>
+  <ul id="singularNounsList"></ul>
+  <h2>Non-conjugated Verbs:</h2>
+  <ul id="nonConjugatedVerbsList"></ul>
+
+  <script>
+    document.getElementById('textForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const text = document.getElementById('textInput').value;
+      processText(text);
+    });
+
+    function processText(text) {
+      // Split the text into words and remove punctuation
+      const words = text.toLowerCase().match(/\b\w+\b/g);
+
+      // Find unique words
+      const uniqueWords = [...new Set(words)];
+
+      // Find plural nouns and singularize them
+      const singularNouns = uniqueWords
+        .filter(word => word.endsWith('s'))
+        .map(word => word.slice(0, -1));
+
+      // Find conjugated verbs and revert them to their base form
+      // (Note: This part requires backend NLP processing, and it's not feasible to implement fully here.)
+      // You would need to use libraries like Natural or SpaCy in a server-side environment.
+
+      // Display the results
+      displayResults(uniqueWords, singularNouns);
+    }
+
+    function displayResults(uniqueWords, singularNouns) {
+      const uniqueWordsList = document.getElementById('uniqueWordsList');
+      const singularNounsList = document.getElementById('singularNounsList');
+
+      uniqueWordsList.innerHTML = '';
+      singularNounsList.innerHTML = '';
+
+      uniqueWords.forEach(word => {
+        const li = document.createElement('li');
+        li.textContent = word;
+        uniqueWordsList.appendChild(li);
+      });
+
+      singularNouns.forEach(word => {
+        const li = document.createElement('li');
+        li.textContent = word;
+        singularNounsList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
